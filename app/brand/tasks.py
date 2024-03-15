@@ -18,4 +18,4 @@ def process_delete_brand(data):
     :return:
     """
 
-    return {'status': 200, 'message': 'Brand deleted successfully'}
+    return {'status': 200, 'message': 'Brand deleted'}
