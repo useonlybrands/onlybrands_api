@@ -1,0 +1,7 @@
+fastapi==0.109.0
+APScheduler==3.10.4
+logfire[fastapi]==0.17
+uvicorn==0.26.0
+pydantic-settings==2.1.0
+starlette==0.35.1
+httpx==0.26.0
