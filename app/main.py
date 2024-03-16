@@ -5,11 +5,10 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 
 from app.models import Base
-from app.database import SessionLocal, engine
 from app.brand.views import brand_router
+from app.database import SessionLocal, engine
 from app.influencer.views import influencer_router
 from app.bid.views import bid_router
-from app.user.views import user_router
 from app.utils import settings
 
 
@@ -48,4 +47,3 @@ if (
 app.include_router(influencer_router)
 app.include_router(brand_router)
 app.include_router(bid_router)
-app.include_router(user_router)

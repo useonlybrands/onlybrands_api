@@ -1,20 +1,17 @@
 from fastapi import APIRouter, Depends
 
-from app import schemas
-from app.auth.views import get_current_user
+from app.auth.views import get_token
 from app.influencer.tasks import process_create_influencer, process_delete_influencer
-from app.schemas import Influencer, User
+from app.schemas import Influencer
 
 influencer_router = APIRouter()
 
 
-@influencer_router.post("/create_influencer/")
-def create_influencer(
-    data: schemas.InfluencerCreate, current_user: User = Depends(get_current_user)
-):
-    return process_create_influencer(data, current_user)
+@influencer_router.post("/create_influencer")
+def create_influencer(data: Influencer, token: str = Depends(get_token)):
+    return process_create_influencer(data)
 
 
-@influencer_router.delete("/delete_influencer/")
-def delete_influencer(data: Influencer, current_user: User = Depends(get_current_user)):
-    return process_delete_influencer(data.id, current_user)
+@influencer_router.delete("/delete_influencer")
+def delete_influencer(data: Influencer, token: str = Depends(get_token)):
+    return process_delete_influencer(data.id)

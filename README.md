@@ -23,19 +23,23 @@ MASTER_TOKEN=your_master_token
 - run `make lint` to lint the code
 - run `make format` to format the code
 
-### Endpoints
+## API Endpoints
 
-Here are some of the main endpoints of the application:
+### Influencer
 
-- `POST /create_bid/`: Create a new bid. Requires `BidCreate` data and the `current_user` token.
-- `POST /accepted_bid/`: Accept a bid. Requires `Bid` data and the `current_user` token.
-- `POST /complete_bid/`: Complete a bid. Requires `Bid` data and the `current_user` token.
-- `DELETE /delete_bid/`: Delete a bid. Requires `Bid` data and the `current_user` token.
-- `POST /create_influencer/`: Create a new influencer. Requires `InfluencerCreate` data and the `current_user` token.
-- `DELETE /delete_influencer/`: Delete an influencer. Requires `Influencer` data and the `current_user` token.
-- `POST /create_brand/`: Create a new brand. Requires `BrandCreate` data and the `current_user` token.
-- `DELETE /delete_brand/`: Delete a brand. Requires `Brand` data and the `current_user` token.
+- GET /influencers/ - Retrieve a list of influencers.
+- GET /influencers/{influencer_id} - Retrieve a specific influencer by ID.
+- POST /influencers/ - Create a new influencer.
 
+### Brand
+
+- POST /brands/ - Create a new brand.
+- DELETE /brands/{brand_id} - Delete a specific brand by ID.
+
+### Bid
+
+- POST /bids/ - Create a new bid.
+- DELETE /bids/{bid_id} - Delete a specific bid by ID.
 
 ## Database Structure
 
