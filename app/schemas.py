@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import Optional
+
 
 class InfluencerBase(BaseModel):
     email: str
@@ -12,14 +12,17 @@ class InfluencerBase(BaseModel):
     age: int
     rating: float
 
+
 class InfluencerCreate(InfluencerBase):
     pass
+
 
 class Influencer(InfluencerBase):
     id: int
 
     class Config:
         from_attributes = True
+
 
 class BrandBase(BaseModel):
     name: str
@@ -28,14 +31,17 @@ class BrandBase(BaseModel):
     industries: str
     language: str
 
+
 class BrandCreate(BrandBase):
     pass
+
 
 class Brand(BrandBase):
     id: int
 
     class Config:
         from_attributes = True
+
 
 class BidBase(BaseModel):
     state: str
@@ -45,8 +51,10 @@ class BidBase(BaseModel):
     title: str
     engagement_type: str
 
+
 class BidCreate(BidBase):
     pass
+
 
 class Bid(BidBase):
     id: int
@@ -56,4 +64,4 @@ class Bid(BidBase):
 
 
 class UnauthorizedMessage(BaseModel):
-    detail: str = 'Bearer token missing or unknown'
+    detail: str = "Bearer token missing or unknown"

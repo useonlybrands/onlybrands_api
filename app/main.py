@@ -11,6 +11,7 @@ from app.influencer.views import influencer_router
 from app.bid.views import bid_router
 from app.utils import settings
 
+
 def get_db():
     db = SessionLocal()
     try:
@@ -18,22 +19,28 @@ def get_db():
     finally:
         db.close()
 
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    logging.info('startup')
+    logging.info("startup")
 
     # Initialize the database
-    with SessionLocal() as session:
+    with SessionLocal():
         # Create tables if they don't exist
         Base.metadata.create_all(bind=engine)
 
     yield
 
-    logging.info('shutdown')
+    logging.info("shutdown")
+
 
 app = FastAPI(lifespan=lifespan)
 
-if bool(settings.logfire_token) and settings.testing is False and settings.dev_mode is False:
+if (
+    bool(settings.logfire_token)
+    and settings.testing is False
+    and settings.dev_mode is False
+):
     logfire.configure()
     logfire.instrument_fastapi(app)
 
