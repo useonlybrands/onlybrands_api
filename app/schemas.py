@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from typing import Optional
 
 
 class User(BaseModel):
@@ -11,18 +12,23 @@ class User(BaseModel):
 
 class TokenData(BaseModel):
     username: str
+    email: str
+    new_user: bool
 
 
 class InfluencerBase(BaseModel):
-    email: str
-    wallet: str
-    platform: str
-    industries: str
-    follower_count: int
-    language: str
-    sex: str
-    age: int
-    rating: float
+    name: Optional[str] = None
+    username: str
+    image: Optional[str] = None
+    email: Optional[str] = None
+    wallet: Optional[str] = None
+    platform: Optional[str] = None
+    industries: Optional[str] = None
+    follower_count: Optional[int] = None
+    language: Optional[str] = None
+    sex: Optional[str] = None
+    age: Optional[int] = None
+    rating: Optional[float] = None
 
 
 class InfluencerCreate(InfluencerBase):
@@ -37,11 +43,16 @@ class Influencer(InfluencerBase):
 
 
 class BrandBase(BaseModel):
-    name: str
-    email: str
-    wallet: str
-    industries: str
-    language: str
+    name: Optional[str] = None
+    username: str
+    image: Optional[str] = None
+    email: Optional[str] = None
+    website: Optional[str] = None
+    location: Optional[str] = None
+    size: Optional[str] = None
+    wallet: Optional[str] = None
+    industries: Optional[str] = None
+    language: Optional[str] = None
 
 
 class BrandCreate(BrandBase):
@@ -56,12 +67,10 @@ class Brand(BrandBase):
 
 
 class BidBase(BaseModel):
-    state: str
-    platform: str
-    influencer_id: int
-    brand_id: int
-    title: str
-    engagement_type: str
+    state: Optional[str] = None
+    platform: Optional[str] = None
+    title: Optional[str] = None
+    engagement_type: Optional[str] = None
 
 
 class BidCreate(BidBase):

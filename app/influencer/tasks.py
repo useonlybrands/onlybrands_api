@@ -3,13 +3,16 @@ from app.database import SessionLocal
 from fastapi import HTTPException
 from app.schemas import User
 from app.models import Influencer
+from devtools import debug
 
 db = SessionLocal()
 
 
 def process_create_influencer(data, current_user: User):
     # Check if the current user is authorized to create an influencer
-    if current_user.username != data["username"]:
+    debug(data)
+    debug(current_user)
+    if current_user.username != data.username:
         raise HTTPException(status_code=403, detail="Not authorized")
 
     influencer = schemas.InfluencerCreate(**data.dict())
@@ -36,6 +39,7 @@ def process_delete_influencer(influencer_id, current_user: User):
     crud.delete_influencer(db=db, influencer_id=influencer_id)
     return {"status": 200, "message": "Influencer deleted"}
 
+
 def process_get_influencer(username: str, current_user: User):
     if current_user is None:
         raise HTTPException(status_code=403, detail="Not authorized")
@@ -44,6 +48,7 @@ def process_get_influencer(username: str, current_user: User):
     if influencer is None:
         raise HTTPException(status_code=404, detail="Influencer not found")
     return influencer
+
 
 def process_get_all_influencers(current_user: User):
     if current_user is None:

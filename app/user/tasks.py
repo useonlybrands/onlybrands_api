@@ -7,6 +7,32 @@ from sqlalchemy.orm import joinedload
 
 db = SessionLocal()
 
+# def create_auth_user_from_jwt(username: str):
+#     influencer = (
+#         db.query(Influencer)
+#         .options(joinedload(Influencer.user))
+#         .filter(Influencer.username == username)
+#         .first()
+#     )
+#     brand = (
+#         db.query(Brand)
+#         .options(joinedload(Brand.user))
+#         .filter(Brand.username == username)
+#         .first()
+#     )
+#
+#     if influencer is None and brand is None:
+#         raise HTTPException(status_code=404, detail="User not found")
+#
+#     user = User(
+#         username=username,
+#         email=influencer.email if influencer else brand.email if brand else None,
+#         influencer=influencer.__dict__ if influencer else None,
+#         brand=brand.__dict__ if brand else None,
+#     )
+#
+#     return user
+
 
 def process_get_user(username: str, current_user: User):
     # Fetch the influencer and brand with the given username from the database
@@ -30,8 +56,8 @@ def process_get_user(username: str, current_user: User):
     # Create a User instance with the associated influencer or brand dict
     user = User(
         username=username,
-        email=influencer.email if influencer else brand.email,
-        new_user=influencer.user.new_user if influencer else brand.user.new_user,
+        email=influencer.email if influencer else brand.email if brand else None,
+        # new_user=influencer.user.new_user if influencer else brand.user.new_user,
         influencer=influencer.__dict__ if influencer else None,
         brand=brand.__dict__ if brand else None,
     )

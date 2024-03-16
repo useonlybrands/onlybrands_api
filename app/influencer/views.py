@@ -2,8 +2,12 @@ from fastapi import APIRouter, Depends
 
 from app import schemas
 from app.auth.tasks import get_current_user
-from app.influencer.tasks import process_create_influencer, process_delete_influencer, process_get_influencer, \
-    process_get_all_influencers
+from app.influencer.tasks import (
+    process_create_influencer,
+    process_delete_influencer,
+    process_get_influencer,
+    process_get_all_influencers,
+)
 from app.schemas import Influencer, User
 
 influencer_router = APIRouter()
