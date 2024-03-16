@@ -4,7 +4,7 @@ This is the backend of the OnlyBrands platform, just do database stuff so far
 
 ## Usage
 
-- you will need to download and setup postgres locally
+- you will need to download and setup postgres locally (look at below)
 - create a virtual environment and install the dependencies with `make install`
 - create a `.env` file in the root of the project with the following content:
 ```plaintext
@@ -63,3 +63,51 @@ MASTER_TOKEN=your_master_token
 - brand_id: Integer, Foreign Key (Brand)
 - created_at: DateTime
 - status: String
+
+
+
+## Setup Postgres
+install postgres server dev
+```
+sudo apt install postgresql-server-dev-all
+```
+you can check the version
+```
+psql --version
+```
+
+login to postgres
+```
+sudo -u postgres psql postgres
+```
+
+you might have to login to the postgres user first
+```
+psql
+CREATE USER postgres;
+ALTER USER postgres WITH SUPERUSER;
+```
+
+change your password for postgres
+```
+\password postgres
+```
+(then enter "waffle" twice) or whatever you want the password to be
+
+exit the postgres user
+```
+\q
+```
+
+You can avoid having to enter the password for postgres by setting up a default password
+```
+echo "localhost:5432:*:postgres:waffle" >> .pgpass
+chmod 600 .pgpass
+```
+
+you can then connect to the database like this
+```
+psql -h localhost -U postgres
+\q
+```
+`
