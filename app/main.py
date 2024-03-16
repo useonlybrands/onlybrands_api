@@ -3,7 +3,7 @@ import logfire
 
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
-
+from fastapi.middleware.cors import CORSMiddleware
 from app.models import Base
 from app.database import SessionLocal, engine
 from app.brand.views import brand_router
@@ -36,6 +36,18 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(lifespan=lifespan)
+
+origins = [
+    "http://localhost:3000",  # Allow localhost for development
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 if (
     bool(settings.logfire_token)
