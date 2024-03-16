@@ -1,13 +1,11 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import HTTPException
 import requests
 from app.utils import settings
 
+session = requests.Session()
 
 
-app = FastAPI()
-
-@app.post("/api/world-verify")
-async def call_world_verify(body, headers):
+def call_world_verify(body, headers):
     try:
         # Make the external API call using the param
         app_id = settings.world_app_id
@@ -22,8 +20,11 @@ async def call_world_verify(body, headers):
             return response
         else:
             # Raise an HTTPException with appropriate status code and detail message
-            raise HTTPException(status_code=response.status_code, detail="Failed to fetch data from external API")
+            raise HTTPException(
+                status_code=response.status_code,
+                detail="Failed to fetch data from external API",
+            )
 
-    except Exception as e:
+    except Exception:
         # Handle exceptions
         raise HTTPException(status_code=500, detail="Internal server error")

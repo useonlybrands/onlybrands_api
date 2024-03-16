@@ -10,7 +10,10 @@ db = SessionLocal()
 def process_create_brand(data, current_user: User):
     # Check if the current user is authorized to create a brand
     if current_user.username != data.username:
-        raise HTTPException(status_code=403, detail="current user does not match creating brand username")
+        raise HTTPException(
+            status_code=403,
+            detail="current user does not match creating brand username",
+        )
 
     brand = schemas.BrandCreate(**data.dict())
     db_brand = crud.create_brand(db=db, brand=brand)
@@ -27,7 +30,10 @@ def process_delete_brand(brand_id, current_user: User):
 
     # Check if the current user is authorized to delete the brand
     if current_user.username != brand.username:
-        raise HTTPException(status_code=403, detail="current user does not match deleting brand username")
+        raise HTTPException(
+            status_code=403,
+            detail="current user does not match deleting brand username",
+        )
 
     crud.delete_brand(db=db, brand_id=brand_id)
     return {"status": 200, "message": "Brand deleted"}
