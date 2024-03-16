@@ -6,7 +6,13 @@ This is the backend of the OnlyBrands platform, just do database stuff so far
 TODO:
 ## Usage
 
-TODO:
+- you might need to download and setup postgres locally
+- create a `.env` file in the root of the project with the following content:
+```plaintext
+MASTER_TOKEN=your_master_token
+```
+- run `make reset-db`, this resets the database
+- run `make run`, this starts the server
 
 ## API Endpoints
 
