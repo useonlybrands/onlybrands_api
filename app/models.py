@@ -1,6 +1,17 @@
-from sqlalchemy import Column, Integer, String, Float, ForeignKey
+from sqlalchemy import Column, Integer, String, Float, ForeignKey, Boolean
 from sqlalchemy.orm import relationship
 from app.database import Base
+
+
+class User(Base):
+    __tablename__ = "users"
+
+    id = Column(Integer, primary_key=True, index=True)
+    username = Column(String, unique=True, index=True)
+    email = Column(String, unique=True, index=True)
+    influencer = relationship("Influencer", back_populates="user")
+    brand = relationship("Brand", back_populates="user")
+    new_user = Column(Boolean, default=True)
 
 
 class Influencer(Base):
@@ -16,6 +27,8 @@ class Influencer(Base):
     age = Column(Integer)
     rating = Column(Float)
     bids = relationship("Bid", back_populates="influencer")
+    user_id = Column(Integer, ForeignKey("user.id"))
+    user = relationship("User", back_populates="influencer")
 
 
 class Brand(Base):
@@ -27,6 +40,8 @@ class Brand(Base):
     industries = Column(String, index=True)
     language = Column(String)
     bids = relationship("Bid", back_populates="brand")
+    user_id = Column(Integer, ForeignKey("user.id"))
+    user = relationship("User", back_populates="brand")
 
 
 class Bid(Base):

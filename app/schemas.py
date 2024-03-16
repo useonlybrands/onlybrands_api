@@ -1,6 +1,18 @@
 from pydantic import BaseModel
 
 
+class User(BaseModel):
+    username: str
+    email: str
+    new_user: bool
+    influencer: dict
+    brand: dict
+
+
+class TokenData(BaseModel):
+    username: str
+
+
 class InfluencerBase(BaseModel):
     email: str
     wallet: str
