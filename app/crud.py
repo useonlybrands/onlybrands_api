@@ -21,11 +21,17 @@ def create_influencer(db: Session, influencer: schemas.InfluencerCreate):
     db.refresh(db_influencer)
     return db_influencer
 
+
 def delete_influencer(db: Session, influencer_id: int):
-    db_influencer = db.query(models.Influencer).filter(models.Influencer.id == influencer_id).first()
+    db_influencer = (
+        db.query(models.Influencer)
+        .filter(models.Influencer.id == influencer_id)
+        .first()
+    )
     db.delete(db_influencer)
     db.commit()
     return db_influencer
+
 
 def get_brand(db: Session, brand_id: int):
     return db.query(models.Brand).filter(models.Brand.id == brand_id).first()

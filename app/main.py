@@ -4,7 +4,6 @@ import logfire
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 
-from app.auth.views import auth_router
 from app.models import Base
 from app.database import SessionLocal, engine
 from app.brand.views import brand_router
@@ -50,4 +49,3 @@ app.include_router(influencer_router)
 app.include_router(brand_router)
 app.include_router(bid_router)
 app.include_router(user_router)
-app.include_router(auth_router)

@@ -3,6 +3,7 @@ from app.database import SessionLocal
 from fastapi import HTTPException
 from app.schemas import User
 from app.models import Brand
+
 db = SessionLocal()
 
 
@@ -14,6 +15,7 @@ def process_create_brand(data, current_user: User):
     brand = schemas.BrandCreate(**data.dict())
     db_brand = crud.create_brand(db=db, brand=brand)
     return {"status": 200, "message": "Brand created successfully", "id": db_brand.id}
+
 
 def process_delete_brand(brand_id, current_user: User):
     # Fetch the brand from the database

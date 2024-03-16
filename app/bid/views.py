@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 
 from app import schemas
-from app.auth.views import get_token, get_current_user
+from app.auth.views import get_current_user
 from app.bid.tasks import (
     process_create_bid,
     process_delete_bid,

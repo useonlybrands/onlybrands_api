@@ -3,7 +3,9 @@ from app.database import SessionLocal
 from fastapi import HTTPException
 from app.schemas import User
 from app.models import Influencer
+
 db = SessionLocal()
+
 
 def process_create_influencer(data, current_user: User):
     # Check if the current user is authorized to create an influencer
@@ -12,7 +14,12 @@ def process_create_influencer(data, current_user: User):
 
     influencer = schemas.InfluencerCreate(**data.dict())
     db_influencer = crud.create_influencer(db=db, influencer=influencer)
-    return {"status": 200, "message": "Influencer created successfully", "id": db_influencer.id}
+    return {
+        "status": 200,
+        "message": "Influencer created successfully",
+        "id": db_influencer.id,
+    }
+
 
 def process_delete_influencer(influencer_id, current_user: User):
     # Fetch the influencer from the database

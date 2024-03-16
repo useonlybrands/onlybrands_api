@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 
 from app import schemas
-from app.auth.views import get_token, get_current_user
+from app.auth.views import get_current_user
 from app.brand.tasks import process_create_brand, process_delete_brand
 from app.schemas import Brand, User
 
@@ -9,7 +9,9 @@ brand_router = APIRouter()
 
 
 @brand_router.post("/create_brand/")
-def create_brand(data: schemas.BrandCreate, current_user: User = Depends(get_current_user)):
+def create_brand(
+    data: schemas.BrandCreate, current_user: User = Depends(get_current_user)
+):
     return process_create_brand(data, current_user)
 
 
