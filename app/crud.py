@@ -21,6 +21,11 @@ def create_influencer(db: Session, influencer: schemas.InfluencerCreate):
     db.refresh(db_influencer)
     return db_influencer
 
+def delete_influencer(db: Session, influencer_id: int):
+    db_influencer = db.query(models.Influencer).filter(models.Influencer.id == influencer_id).first()
+    db.delete(db_influencer)
+    db.commit()
+    return db_influencer
 
 def get_brand(db: Session, brand_id: int):
     return db.query(models.Brand).filter(models.Brand.id == brand_id).first()
@@ -57,4 +62,11 @@ def create_bid(db: Session, bid: schemas.BidCreate):
     db.add(db_bid)
     db.commit()
     db.refresh(db_bid)
+    return db_bid
+
+
+def delete_bid(db: Session, bid_id: int):
+    db_bid = db.query(models.Bid).filter(models.Bid.id == bid_id).first()
+    db.delete(db_bid)
+    db.commit()
     return db_bid

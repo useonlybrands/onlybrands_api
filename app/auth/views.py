@@ -7,8 +7,8 @@ from fastapi.security.http import HTTPAuthorizationCredentials, HTTPBearer
 from starlette import status
 
 from app.database import SessionLocal
-from app.models import User
-from app.schemas import UnauthorizedMessage, TokenData
+from app.schemas import UnauthorizedMessage, TokenData, User
+from app.user.tasks import process_get_user
 from app.utils import settings
 
 auth_router = APIRouter()
@@ -34,15 +34,14 @@ def get_current_user(token: str = Depends(oauth2_scheme)):
         token_data = TokenData(username=username)
     except jwt.JWTError:
         raise credentials_exception
-    db = SessionLocal()
-    user = db.query(User).filter(User.username == token_data.username).first()
+    user = process_get_user(username=token_data.username)
     if user is None:
         raise credentials_exception
     return user
 
 async def get_token(
     auth: t.Optional[HTTPAuthorizationCredentials] = Depends(get_bearer_token),
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(process_get_user),
 ) -> str:
     # If settings.testing is True, return a dummy token
     if settings.testing:
