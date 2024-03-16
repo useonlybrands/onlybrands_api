@@ -1,5 +1,6 @@
 # OnlyBrands API
 
+![backend_logo](https://github.com/useonlybrands/onlybrands_api/blob/main/onlybrands_api.png?raw=true)
 This is the backend of the OnlyBrands platform, just do database stuff so far
 
 ## Usage
