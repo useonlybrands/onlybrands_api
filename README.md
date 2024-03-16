@@ -1,9 +1,7 @@
 # OnlyBrands API
 
 This is the backend of the OnlyBrands platform, just do database stuff so far
-## Installation
 
-TODO:
 ## Usage
 
 - you will need to download and setup postgres locally
@@ -16,6 +14,13 @@ MASTER_TOKEN=your_master_token
 - run `make run`, this starts the server
 - you can now access the API at `http://locahost:8000/docs`
 - you can use the master token to access the API, or create a new user and use the token generated for that user
+
+### Dev
+
+- todo: tests
+- We use [Ruff](https://github.com/astral-sh/ruff) to lint and format
+- run `make lint` to lint the code
+- run `make format` to format the code
 
 ## API Endpoints
 
