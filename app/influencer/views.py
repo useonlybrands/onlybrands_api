@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 
 from app import schemas
-from app.auth.views import get_current_user
+from app.auth.tasks import get_current_user
 from app.influencer.tasks import process_create_influencer, process_delete_influencer
 from app.schemas import Influencer, User
 
