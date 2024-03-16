@@ -19,7 +19,7 @@ class Influencer(InfluencerBase):
     id: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class BrandBase(BaseModel):
     name: str
@@ -35,7 +35,7 @@ class Brand(BrandBase):
     id: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class BidBase(BaseModel):
     state: str
@@ -52,7 +52,7 @@ class Bid(BidBase):
     id: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class UnauthorizedMessage(BaseModel):

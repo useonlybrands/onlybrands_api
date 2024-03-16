@@ -14,7 +14,7 @@ class Influencer(Base):
     sex = Column(String)
     age = Column(Integer)
     rating = Column(Float)
-    bids = relationship('Bid', back_populates='brand')
+    bids = relationship('Bid', back_populates='influencer')
 
 class Brand(Base):
     __tablename__ = 'brand'
@@ -24,7 +24,7 @@ class Brand(Base):
     wallet = Column(String, index=True)
     industries = Column(String, index=True)
     language = Column(String)
-    bids = relationship('Bid', back_populates='influencer')
+    bids = relationship('Bid', back_populates='brand')
 
 
 class Bid(Base):
