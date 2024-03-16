@@ -1,4 +1,4 @@
-from . import crud, schemas
+from app import crud, schemas
 from app.database import SessionLocal
 
 

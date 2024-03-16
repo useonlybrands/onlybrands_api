@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 
 from app.auth.views import get_token
 from app.influencer.tasks import process_create_influencer, process_delete_influencer
-from app.models import Influencer
+from app.schemas import Influencer
 
 influencer_router = APIRouter()
 

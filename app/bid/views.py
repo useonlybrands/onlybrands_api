@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 
 from app.auth.views import get_token
 from app.bid.tasks import process_create_bid, process_delete_bid, process_complete_bid, process_accepted_bid
-from app.models import Bid
+from app.schemas import Bid
 
 bid_router = APIRouter()
 

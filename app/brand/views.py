@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 
 from app.auth.views import get_token
 from app.brand.tasks import process_create_brand, process_delete_brand
-from app.models import Brand
+from app.schemas import Brand
 
 brand_router = APIRouter()
 
