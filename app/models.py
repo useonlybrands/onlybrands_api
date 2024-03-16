@@ -3,9 +3,21 @@ from sqlalchemy.orm import relationship
 from app.database import Base
 
 
+# class User(Base):
+#     __tablename__ = "users"
+#
+#     id = Column(Integer, primary_key=True, index=True)
+#     username = Column(String, unique=True, index=True)
+#     email = Column(String, unique=True, index=True)
+#     influencer = relationship("Influencer", back_populates="user")
+#     brand = relationship("Brand", back_populates="user")
+#     new_user = Column(Boolean, default=True)
+
+
 class Influencer(Base):
     __tablename__ = "influencer"
     id = Column(Integer, primary_key=True, index=True)
+    username = Column(String, index=True, unique=True)
     email = Column(String, unique=True, index=True)
     wallet = Column(String, index=True)
     platform = Column(String, index=True)
@@ -22,6 +34,7 @@ class Brand(Base):
     __tablename__ = "brand"
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, index=True)
+    username = Column(String, index=True, unique=True)
     email = Column(String, unique=True, index=True)
     wallet = Column(String, index=True)
     industries = Column(String, index=True)
