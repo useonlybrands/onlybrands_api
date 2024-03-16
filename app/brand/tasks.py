@@ -32,8 +32,18 @@ def process_delete_brand(brand_id, current_user: User):
     crud.delete_brand(db=db, brand_id=brand_id)
     return {"status": 200, "message": "Brand deleted"}
 
-def process_get_brand(username: str):
-    brand = db.query(Brand).filter(Brand.username == brand_id).first()
+def process_get_brand(username: str, current_user: User):
+    if current_user is None:
+        raise HTTPException(status_code=403, detail="Not authorized")
+
+    brand = db.query(Brand).filter(Brand.username == username).first()
     if brand is None:
         raise HTTPException(status_code=404, detail="Brand not found")
     return brand
+
+def process_get_all_brands(current_user: User):
+    if current_user is None:
+        raise HTTPException(status_code=403, detail="Not authorized")
+
+    brands = db.query(Brand).all()
+    return brands

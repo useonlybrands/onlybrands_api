@@ -22,4 +22,8 @@ def delete_brand(data: Brand, current_user: User = Depends(get_current_user)):
 
 @brand_router.get("/brand/{username}")
 def get_brand(username: str, current_user: User = Depends(get_current_user)):
-    return process_get_brand(username)
+    return process_get_brand(username, current_user)
+
+@brand_router.get("/all_brands/")
+def get_all_brands(current_user: User = Depends(get_current_user)):
+    return process_get_all_brands(current_user)
