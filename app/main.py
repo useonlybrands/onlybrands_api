@@ -51,8 +51,6 @@ app.add_middleware(
 
 if (
     bool(settings.logfire_token)
-    and settings.testing is False
-    and settings.dev_mode is False
 ):
     logfire.configure()
     logfire.instrument_fastapi(app)

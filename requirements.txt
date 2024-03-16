@@ -8,3 +8,14 @@ httpx==0.26.0
 python-jose[cryptography]==3.3.0
 sqlalchemy==1.4.31
 psycopg2-binary==2.9.9
+logfire[fastapi]==0.17
+opentelemetry-instrumentation-sqlite3
+opentelemetry-instrumentation-urllib
+opentelemetry-instrumentation-requests
+opentelemetry-instrumentation-starlette
+opentelemetry-instrumentation-urllib3
+opentelemetry-instrumentation-psycopg2
+opentelemetry-instrumentation-httpx
+opentelemetry-instrumentation-sqlalchemy
+
+
