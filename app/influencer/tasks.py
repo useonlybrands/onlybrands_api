@@ -34,7 +34,7 @@ def process_delete_influencer(influencer_id, current_user: User):
 
     # Check if the current user is authorized to delete the influencer
     if current_user.username != influencer.username:
-        raise HTTPException(status_code=403, detail="Not authorized")
+        raise HTTPException(status_code=403, detail="current user is not equal to the deleting influencer")
 
     crud.delete_influencer(db=db, influencer_id=influencer_id)
     return {"status": 200, "message": "Influencer deleted"}
@@ -42,11 +42,11 @@ def process_delete_influencer(influencer_id, current_user: User):
 
 def process_get_influencer(username: str, current_user: User):
     if current_user is None:
-        raise HTTPException(status_code=403, detail="Not authorized")
+        raise HTTPException(status_code=403, detail="current user not passed")
 
     influencer = db.query(Influencer).filter(Influencer.username == username).first()
     if influencer is None:
-        raise HTTPException(status_code=404, detail="Influencer not found")
+        raise HTTPException(status_code=404, detail="Influencer not found in the database")
     return influencer
 
 

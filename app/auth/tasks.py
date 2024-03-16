@@ -28,6 +28,7 @@ def get_current_user(token: str = Depends(oauth2_scheme)):
             settings.public_key,
             algorithms=["RS256"],
             audience="http://localhost:3000",
+            options={"verify_exp": False},
         )
         username: str = payload.get("username")
         email: str = payload.get("email")
