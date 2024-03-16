@@ -28,7 +28,6 @@ class Influencer(Base):
     language = Column(String)
     sex = Column(String)
     age = Column(Integer)
-    rating = Column(Float)
     bids = relationship("Bid", back_populates="influencer")
 
 
