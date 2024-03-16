@@ -27,6 +27,11 @@ def create_brand(db: Session, brand: schemas.BrandCreate):
     db.refresh(db_brand)
     return db_brand
 
+def delete_brand(db: Session, brand_id: int):
+    db_brand = db.query(models.Brand).filter(models.Brand.id == brand_id).first()
+    db.delete(db_brand)
+    db.commit()
+
 def get_bid(db: Session, bid_id: int):
     return db.query(models.Bid).filter(models.Bid.id == bid_id).first()
 

@@ -5,6 +5,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 
 from app.brand.views import brand_router
+from app.database import SessionLocal
 from app.influencer.views import influencer_router
 from app.bid.views import bid_router
 from app.utils import settings
@@ -15,6 +16,14 @@ async def lifespan(app: FastAPI):
     yield
 
 app = FastAPI(lifespan=lifespan)
+
+# Dependency
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
 if bool(settings.logfire_token) and settings.testing is False and settings.dev_mode is False:
     logfire.configure()

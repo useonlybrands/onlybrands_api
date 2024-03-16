@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security.http import HTTPAuthorizationCredentials, HTTPBearer
 from starlette import status
 
-from app.models import UnauthorizedMessage
+from app.schemas import UnauthorizedMessage
 from app.utils import settings
 
 auth_router = APIRouter()

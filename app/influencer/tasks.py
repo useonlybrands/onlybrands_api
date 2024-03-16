@@ -1,4 +1,4 @@
-from . import crud, schemas
+from app import schemas, crud
 from app.database import SessionLocal
 
 def process_create_influencer(data):

@@ -53,3 +53,7 @@ class Bid(BidBase):
 
     class Config:
         orm_mode = True
+
+
+class UnauthorizedMessage(BaseModel):
+    detail: str = 'Bearer token missing or unknown'
