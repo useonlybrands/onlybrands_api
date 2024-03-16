@@ -6,7 +6,8 @@ This is the backend of the OnlyBrands platform, just do database stuff so far
 TODO:
 ## Usage
 
-- you might need to download and setup postgres locally
+- you will need to download and setup postgres locally
+- create a virtual environment and install the dependencies with `make install`
 - create a `.env` file in the root of the project with the following content:
 ```plaintext
 MASTER_TOKEN=your_master_token
