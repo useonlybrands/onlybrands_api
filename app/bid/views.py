@@ -19,6 +19,6 @@ def accepted_bid(data: Bid, token: str = Depends(get_token)):
 def complete_bid(data: Bid, token: str = Depends(get_token)):
     return process_complete_bid(data)
 
-@bid_router.post('/delete_bid')
+@bid_router.delete('/delete_bid')
 def delete_bid(data: Bid, token: str = Depends(get_token)):
     return process_delete_bid(data.id)

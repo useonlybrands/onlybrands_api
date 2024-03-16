@@ -13,6 +13,6 @@ def create_influencer(data: Influencer, token: str = Depends(get_token)):
 
 
 
-@influencer_router.post('/delete_influencer')
+@influencer_router.delete('/delete_influencer')
 def delete_influencer(data: Influencer, token: str = Depends(get_token)):
     return process_delete_influencer(data.id)
