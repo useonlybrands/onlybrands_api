@@ -14,6 +14,8 @@ MASTER_TOKEN=your_master_token
 ```
 - run `make reset-db`, this resets the database
 - run `make run`, this starts the server
+- you can now access the API at `http://locahost:8000/docs`
+- you can use the master token to access the API, or create a new user and use the token generated for that user
 
 ## API Endpoints
 
