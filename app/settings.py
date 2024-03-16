@@ -23,5 +23,6 @@ zznTozHbhYaWWIEX9kYHAccCAwEAAQ==
 -----END PUBLIC KEY-----"""
     logfire_token: Optional[str] = None
     database_url: str = "postgresql://postgres@localhost:5432/onlybrands"
+    world_app_id: str = "app_staging_36f4ed912bf5790caf5fdb754bc5bf3c"
 
     model_config = SettingsConfigDict(env_file=".env", extra="allow")
