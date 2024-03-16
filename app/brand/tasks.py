@@ -1,21 +1,13 @@
-import loggings
-import os
+from . import crud, schemas
+from app.database import SessionLocal
 
 def process_create_brand(data):
-    """
-    This should take the form data and the discovery token
-    :param data:
-    :return:
-    """
+    db = SessionLocal()
+    brand = schemas.BrandCreate(**data.dict())
+    db_brand = crud.create_brand(db=db, brand=brand)
+    return {'status': 200, 'message': 'Brand created successfully', 'id': db_brand.id}
 
-    return {'status': 200, 'message': 'Brand created successfully'}
-
-
-def process_delete_brand(data):
-    """
-    Delete the brand from the database
-    :param data:
-    :return:
-    """
-
+def process_delete_brand(brand_id):
+    db = SessionLocal()
+    crud.delete_brand(db=db, brand_id=brand_id)
     return {'status': 200, 'message': 'Brand deleted'}
