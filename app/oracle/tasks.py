@@ -21,8 +21,8 @@ def process_verify_image(url: str):
             content = meta_tag.get("content", "")
             likes_comments = content.split(" - ")[0]
             likes, comments = likes_comments.split(", ")
-            likes = likes.split(" ")[0]
-            comments = comments.split(" ")[0]
+            likes = int(likes.split(" ")[0])
+            comments = int(comments.split(" ")[0])
             return {"status": 200, "likes": likes, "comments": comments}
     return {"status": response.status_code, "error": "Failed to process image"}
 
