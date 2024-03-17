@@ -5,20 +5,28 @@ from typing import Optional
 class User(BaseModel):
     username: str
     email: str
-    new_user: bool
-    influencer: dict
-    brand: dict
+    new_user: Optional[bool] = None
+    influencer: Optional[dict] = None
+    brand: Optional[dict] = None
+    is_superuser: Optional[bool] = False
 
 
 class TokenData(BaseModel):
     username: str
     email: str
     new_user: bool
+    is_superuser: bool
+
+
+class CompleteBid(BaseModel):
+    bid_id: int
+    evidence: str
 
 
 class WorldVerify(BaseModel):
     proof: str
     action_id: str
+
 
 class InfluencerBase(BaseModel):
     name: Optional[str] = None
@@ -71,10 +79,17 @@ class Brand(BrandBase):
 
 
 class BidBase(BaseModel):
-    state: Optional[str] = None
+    state: Optional[str] = None  # pending, denied, accepted, completed
     platform: Optional[str] = None
+    influencer_username: Optional[str] = None
+    influencer_id: Optional[int] = None
+    influencer: Optional[Influencer] = None
+    brand_username: Optional[str] = None
+    brand_id: Optional[int] = None
+    brand: Optional[Brand] = None
     title: Optional[str] = None
     engagement_type: Optional[str] = None
+    evidence: Optional[str] = None
 
 
 class BidCreate(BidBase):

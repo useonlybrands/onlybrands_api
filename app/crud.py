@@ -63,12 +63,11 @@ def get_bids(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Bid).offset(skip).limit(limit).all()
 
 
-def create_bid(db: Session, bid: schemas.BidCreate):
-    db_bid = models.Bid(**bid.dict())
-    db.add(db_bid)
+def create_bid(db: Session, bid: models.Bid):
+    db.add(bid)
     db.commit()
-    db.refresh(db_bid)
-    return db_bid
+    db.refresh(bid)
+    return bid
 
 
 def delete_bid(db: Session, bid_id: int):

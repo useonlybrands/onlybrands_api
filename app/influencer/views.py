@@ -8,7 +8,7 @@ from app.influencer.tasks import (
     process_get_influencer,
     process_get_all_influencers,
 )
-from app.schemas import Influencer, User
+from app.schemas import User
 
 influencer_router = APIRouter()
 
@@ -20,9 +20,9 @@ def create_influencer(
     return process_create_influencer(data, current_user)
 
 
-@influencer_router.delete("/delete_influencer/")
-def delete_influencer(data: Influencer, current_user: User = Depends(get_current_user)):
-    return process_delete_influencer(data.id, current_user)
+@influencer_router.delete("/delete_influencer/{username}")
+def delete_influencer(username: str, current_user: User = Depends(get_current_user)):
+    return process_delete_influencer(username, current_user)
 
 
 @influencer_router.get("/influencer/{username}")
