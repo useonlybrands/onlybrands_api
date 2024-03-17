@@ -8,7 +8,7 @@ from app.brand.tasks import (
     process_get_brand,
     process_get_all_brands,
 )
-from app.schemas import Brand, User
+from app.schemas import User
 
 brand_router = APIRouter()
 
@@ -20,9 +20,9 @@ def create_brand(
     return process_create_brand(data, current_user)
 
 
-@brand_router.delete("/delete_brand/")
-def delete_brand(data: Brand, current_user: User = Depends(get_current_user)):
-    return process_delete_brand(data.id, current_user)
+@brand_router.delete("/delete_brand/{username}")
+def delete_brand(username: str, current_user: User = Depends(get_current_user)):
+    return process_delete_brand(username, current_user)
 
 
 @brand_router.get("/brand/{username}")

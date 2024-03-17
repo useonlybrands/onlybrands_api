@@ -10,11 +10,21 @@ db = SessionLocal()
 
 def process_create_influencer(data, current_user: User):
     # Check if the current user is authorized to create an influencer
-    debug(data)
-    debug(current_user)
-    if current_user.username != data.username:
+    if current_user.username != data.username and not current_user.is_superuser:
         raise HTTPException(status_code=403, detail="Not authorized")
 
+    # Check if the influencer already exists by username or email
+    influencer = (
+        db.query(Influencer)
+        .filter(
+            (Influencer.username == data.username) | (Influencer.email == data.email)
+        )
+        .first()
+    )
+    if influencer:
+        raise HTTPException(status_code=409, detail="Influencer already exists")
+
+    # If the influencer does not exist, create a new one
     influencer = schemas.InfluencerCreate(**data.dict())
     db_influencer = crud.create_influencer(db=db, influencer=influencer)
     return {
@@ -24,26 +34,28 @@ def process_create_influencer(data, current_user: User):
     }
 
 
-def process_delete_influencer(influencer_id, current_user: User):
+def process_delete_influencer(username, current_user: User):
     # Fetch the influencer from the database
-    influencer = db.query(Influencer).get(influencer_id)
+    influencer = db.query(Influencer).filter(Influencer.username == username).first()
 
     # Check if the influencer exists
     if influencer is None:
         raise HTTPException(status_code=404, detail="Influencer not found")
 
     # Check if the current user is authorized to delete the influencer
-    if current_user.username != influencer.username:
+    if current_user.username != influencer.username and not current_user.is_superuser:
         raise HTTPException(
             status_code=403,
             detail="current user is not equal to the deleting influencer",
         )
 
-    crud.delete_influencer(db=db, influencer_id=influencer_id)
+    crud.delete_influencer(db=db, influencer_id=influencer.id)
     return {"status": 200, "message": "Influencer deleted"}
 
 
 def process_get_influencer(username: str, current_user: User):
+    debug(username)
+    debug(current_user)
     if current_user is None:
         raise HTTPException(status_code=403, detail="current user not passed")
 

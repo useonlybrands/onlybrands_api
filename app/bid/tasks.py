@@ -1,38 +1,83 @@
-from app import crud, schemas
+from app import crud
 from app.database import SessionLocal
 from fastapi import HTTPException
-from app.models import Bid
+from app.models import Bid, Influencer, Brand
 from app.schemas import User
 
 db = SessionLocal()
 
 
 def process_create_bid(data, current_user: User):
-    # Fetch the bid from the database
-    bid = db.query(Bid).get(data.bid_id)
-
-    # Check if the bid exists and if the current user is the associated brand
-    if bid is None or bid.brand.username != current_user.username:
+    # Check if the current user is authorized to create a bid
+    if current_user.username != data.brand_username and not current_user.is_superuser:
         raise HTTPException(
-            status_code=403, detail="current username does not match bid.brand.username"
+            status_code=403,
+            detail="current user does not match creating bid username",
         )
 
-    bid = schemas.BidCreate(**data.dict())
+    # a brand creates a bid therefore the brand_username is required
+    if data.brand_username:
+        if (
+            current_user.username != data.brand_username
+            and not current_user.is_superuser
+        ):
+            raise HTTPException(
+                status_code=403,
+                detail="current user does not match creating bid brand username",
+            )
+        brand = db.query(Brand).filter(Brand.username == data.brand_username).first()
+        if brand is None:
+            raise HTTPException(
+                status_code=404, detail="Brand not found in the database"
+            )
+
+        data.brand_id = brand.id
+        data.brand = brand
+    else:
+        raise HTTPException(
+            status_code=404, detail="brand_username is required to create a bid."
+        )
+
+    # set the brand status defualt to pending
+    data.state = data.state if data.state else "pending"
+    # If the bid does not exist, create a new one
+    bid = Bid(
+        state=data.state,
+        platform=data.platform,
+        influencer_username=data.influencer_username,
+        influencer_id=data.influencer_id,
+        influencer=data.influencer,
+        brand_username=data.brand_username,
+        brand_id=data.brand_id,
+        brand=data.brand,
+        title=data.title,
+        engagement_type=data.engagement_type,
+    )
     db_bid = crud.create_bid(db=db, bid=bid)
     return {"status": 200, "message": "Bid created successfully", "id": db_bid.id}
 
 
-def process_accepted_bid(data, current_user: User):
+def process_accepted_bid(bid_id: int, current_user: User):
     # Fetch the bid from the database
-    bid = db.query(Bid).get(data.bid_id)
+    bid = db.query(Bid).get(bid_id)
 
     # Check if the bid exists and if the current user is the associated influencer
-    if bid is None or bid.influencer.username != current_user.username:
+    if bid is None:
         raise HTTPException(
             status_code=403,
-            detail="current username does not match bid.influencer.username",
+            detail="Bid not found in the database",
         )
 
+    # get influencer
+    influencer = (
+        db.query(Influencer)
+        .filter(Influencer.username == current_user.username)
+        .first()
+    )
+
+    # update the bid with influencer
+    bid.influencer_id = influencer.id
+    bid.influencer = influencer
     bid.state = "accepted"
     db.commit()
     return {"status": 200, "message": "Bid accepted successfully", "id": bid.id}
@@ -43,15 +88,30 @@ def process_complete_bid(data, current_user: User):
     bid = db.query(Bid).get(data.bid_id)
 
     # Check if the bid exists and if the current user is the associated influencer
-    if bid is None or bid.influencer.username != current_user.username:
+    if bid is None:
         raise HTTPException(
             status_code=403,
-            detail="current username does not match bid.influencer.username",
+            detail="Bid not found in the database",
+        )
+
+    # get influencer
+    influencer = (
+        db.query(Influencer)
+        .filter(Influencer.username == current_user.username)
+        .first()
+    )
+
+    # check the influencer is the one who accepted the bid
+    if influencer.id != bid.influencer_id:
+        raise HTTPException(
+            status_code=403,
+            detail="influencer does not match the one who accepted the bid",
         )
 
     bid.state = "completed"
+    bid.evidence = data.evidence
     db.commit()
-    return {"status": 200, "message": "Bid completed successfully", "id": bid.id}
+    return {"status": 200, "message": "Bid accepted successfully", "id": bid.id}
 
 
 def process_delete_bid(bid_id, current_user: User):
@@ -59,7 +119,11 @@ def process_delete_bid(bid_id, current_user: User):
     bid = db.query(Bid).get(bid_id)
 
     # Check if the bid exists and if the current user is the associated brand
-    if bid is None or bid.brand.username != current_user.username:
+    if (
+        bid is None
+        or bid.brand_username != current_user.username
+        and not current_user.is_superuser
+    ):
         raise HTTPException(
             status_code=403, detail="current username does not match bid.brand.username"
         )
