@@ -8,7 +8,7 @@ from devtools import debug
 db = SessionLocal()
 
 
-def create_or_update_influencer(data, current_user: User):
+def process_create_or_update_influencer(data, current_user: User):
     # Check if the current user is authorized to create an influencer
     if current_user.username != data.username and not current_user.is_superuser:
         raise HTTPException(status_code=403, detail="Not authorized")

@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends
 from app import schemas
 from app.auth.tasks import get_current_user
 from app.bid.tasks import (
-    process_create_bid,
+    process_create_or_update_bid,
     process_delete_bid,
     process_complete_bid,
     process_accepted_bid,
@@ -17,7 +17,7 @@ bid_router = APIRouter()
 def create_or_update_bid(
     data: schemas.BidCreate, current_user: User = Depends(get_current_user)
 ):
-    return create_or_update_bid(data, current_user)
+    return process_create_or_update_bid(data, current_user)
 
 @bid_router.post("/accept_bid/{id}")
 def accepted_bid(id: int, current_user: User = Depends(get_current_user)):

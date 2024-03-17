@@ -7,7 +7,7 @@ from app.schemas import User
 db = SessionLocal()
 
 
-def create_or_update_bid(data, current_user: User):
+def process_create_or_update_bid(data, current_user: User):
     # Check if the current user is authorized to create a bid
     if current_user.username != data.brand_username and not current_user.is_superuser:
         raise HTTPException(

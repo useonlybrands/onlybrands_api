@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends
 from app import schemas
 from app.auth.tasks import get_current_user
 from app.brand.tasks import (
-    create_or_update_brand,
+    process_create_or_update_brand,
     process_delete_brand,
     process_get_brand,
     process_get_all_brands,
@@ -17,7 +17,7 @@ brand_router = APIRouter()
 def create_or_update_brand(
     data: schemas.BrandCreate, current_user: User = Depends(get_current_user)
 ):
-    return create_or_update_brand(data, current_user)
+    return process_create_or_update_brand(data, current_user)
 
 
 @brand_router.delete("/delete_brand/{username}")
