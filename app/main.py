@@ -4,6 +4,8 @@ import logfire
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+
+from app.auth.views import auth_router
 from app.models import Base
 from app.database import SessionLocal, engine
 from app.brand.views import brand_router
@@ -12,7 +14,7 @@ from app.bid.views import bid_router
 from app.oracle.views import oracle_router
 from app.user.views import user_router
 from app.utils import settings
-from app.auth.views import user_router
+
 
 
 def get_db():
@@ -60,4 +62,4 @@ app.include_router(brand_router)
 app.include_router(bid_router)
 app.include_router(user_router)
 app.include_router(oracle_router)
-app.include_router(user_router)
+app.include_router(auth_router)
