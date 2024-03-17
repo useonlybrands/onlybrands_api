@@ -12,6 +12,7 @@ from app.bid.views import bid_router
 from app.oracle.views import oracle_router
 from app.user.views import user_router
 from app.utils import settings
+from app.auth.views import user_router
 
 
 def get_db():
@@ -59,3 +60,4 @@ app.include_router(brand_router)
 app.include_router(bid_router)
 app.include_router(user_router)
 app.include_router(oracle_router)
+app.include_router(user_router)
