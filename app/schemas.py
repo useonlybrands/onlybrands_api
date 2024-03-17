@@ -16,6 +16,10 @@ class TokenData(BaseModel):
     new_user: bool
 
 
+class WorldVerify(BaseModel):
+    proof: str
+    action_id: str
+
 class InfluencerBase(BaseModel):
     name: Optional[str] = None
     username: str

@@ -49,7 +49,7 @@ def get_current_user(token: str = Depends(oauth2_scheme)):
 
 def process_world_verify(proof, action_id):
     request_body = {**proof, "action": action_id}
-    # Convert the dictionary to JSON string
+    # # Convert the dictionary to JSON string
     request_body = json.dumps(request_body)
 
     headers = {"Content-Type": "application/json"}
@@ -64,7 +64,7 @@ def process_world_verify(proof, action_id):
             return {
                 "status": 200,
                 "code": "success",
-                "detail": "This action verified correctly!",
+                "detail": "This worldcoin verified correctly!",
             }
         else:
             # Print an error message if the request was not successful
