@@ -136,3 +136,10 @@ def process_delete_bid(bid_id, current_user: User):
 
     crud.delete_bid(db=db, bid_id=bid_id)
     return {"status": 200, "message": "Bid deleted"}
+
+def process_get_all_bids(current_user: User):
+    if current_user is None:
+        raise HTTPException(status_code=403, detail="current user does not exist")
+
+    bids = db.query(Bid).all()
+    return bids
