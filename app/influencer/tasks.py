@@ -8,7 +8,7 @@ from devtools import debug
 db = SessionLocal()
 
 
-def process_create_influencer(data, current_user: User):
+def create_or_update_influencer(data, current_user: User):
     # Check if the current user is authorized to create an influencer
     if current_user.username != data.username and not current_user.is_superuser:
         raise HTTPException(status_code=403, detail="Not authorized")
@@ -21,17 +21,25 @@ def process_create_influencer(data, current_user: User):
         )
         .first()
     )
-    if influencer:
-        raise HTTPException(status_code=409, detail="Influencer already exists")
 
     # If the influencer does not exist, create a new one
-    influencer = schemas.InfluencerCreate(**data.dict())
-    db_influencer = crud.create_influencer(db=db, influencer=influencer)
-    return {
-        "status": 200,
-        "message": "Influencer created successfully",
-        "id": db_influencer.id,
-    }
+    if not influencer:
+        influencer = schemas.InfluencerCreate(**data.dict())
+        db_influencer = crud.create_influencer(db=db, influencer=influencer)
+        return {
+            "status": 200,
+            "message": "Influencer created successfully",
+            "id": db_influencer.id,
+        }
+
+    # If the influencer exists, update it
+    else:
+        updated_influencer = crud.update_influencer(db=db, influencer=influencer, data=data)
+        return {
+            "status": 200,
+            "message": "Influencer updated successfully",
+            "id": updated_influencer.id,
+        }
 
 
 def process_delete_influencer(username, current_user: User):

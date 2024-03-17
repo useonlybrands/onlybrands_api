@@ -21,6 +21,16 @@ def create_influencer(db: Session, influencer: schemas.InfluencerCreate):
     db.refresh(db_influencer)
     return db_influencer
 
+def update_influencer(db: Session, influencer: Influencer, data: InfluencerCreate):
+    influencer_data = data.dict()
+    for key, value in influencer_data.items():
+        if value is not None:
+            setattr(influencer, key, value)
+    db.add(influencer)
+    db.commit()
+    db.refresh(influencer)
+    return influencer
+
 
 def delete_influencer(db: Session, influencer_id: int):
     db_influencer = (
@@ -36,10 +46,28 @@ def delete_influencer(db: Session, influencer_id: int):
 def get_brand(db: Session, brand_id: int):
     return db.query(models.Brand).filter(models.Brand.id == brand_id).first()
 
+def update_brand(db: Session, brand: Brand, data: BrandCreate):
+    brand_data = data.dict()
+    for key, value in brand_data.items():
+        if value is not None:
+            setattr(brand, key, value)
+    db.add(brand)
+    db.commit()
+    db.refresh(brand)
+    return brand
 
 def get_brands(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Brand).offset(skip).limit(limit).all()
 
+def update_bid(db: Session, bid: Bid, data: BidCreate):
+    bid_data = data.dict()
+    for key, value in bid_data.items():
+        if value is not None:
+            setattr(bid, key, value)
+    db.add(bid)
+    db.commit()
+    db.refresh(bid)
+    return bid
 
 def create_brand(db: Session, brand: schemas.BrandCreate):
     db_brand = models.Brand(**brand.dict())

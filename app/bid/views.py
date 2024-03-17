@@ -13,10 +13,11 @@ from app.schemas import User, CompleteBid
 bid_router = APIRouter()
 
 
-@bid_router.post("/create_bid/")
-def create_bid(data: schemas.BidCreate, current_user: User = Depends(get_current_user)):
-    return process_create_bid(data, current_user)
-
+@bid_router.put("/create_or_update_bid/")
+def create_or_update_bid(
+    data: schemas.BidCreate, current_user: User = Depends(get_current_user)
+):
+    return create_or_update_bid(data, current_user)
 
 @bid_router.post("/accept_bid/{id}")
 def accepted_bid(id: int, current_user: User = Depends(get_current_user)):

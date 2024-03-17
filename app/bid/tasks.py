@@ -7,7 +7,7 @@ from app.schemas import User
 db = SessionLocal()
 
 
-def process_create_bid(data, current_user: User):
+def create_or_update_bid(data, current_user: User):
     # Check if the current user is authorized to create a bid
     if current_user.username != data.brand_username and not current_user.is_superuser:
         raise HTTPException(
@@ -17,14 +17,6 @@ def process_create_bid(data, current_user: User):
 
     # a brand creates a bid therefore the brand_username is required
     if data.brand_username:
-        if (
-            current_user.username != data.brand_username
-            and not current_user.is_superuser
-        ):
-            raise HTTPException(
-                status_code=403,
-                detail="current user does not match creating bid brand username",
-            )
         brand = db.query(Brand).filter(Brand.username == data.brand_username).first()
         if brand is None:
             raise HTTPException(
@@ -38,23 +30,37 @@ def process_create_bid(data, current_user: User):
             status_code=404, detail="brand_username is required to create a bid."
         )
 
-    # set the brand status defualt to pending
+    # set the brand status default to pending
     data.state = data.state if data.state else "pending"
-    # If the bid does not exist, create a new one
-    bid = Bid(
-        state=data.state,
-        platform=data.platform,
-        influencer_username=data.influencer_username,
-        influencer_id=data.influencer_id,
-        influencer=data.influencer,
-        brand_username=data.brand_username,
-        brand_id=data.brand_id,
-        brand=data.brand,
-        title=data.title,
-        engagement_type=data.engagement_type,
+
+    # Check if the bid already exists by title
+    bid = (
+        db.query(Bid)
+        .filter(Bid.title == data.title)
+        .first()
     )
-    db_bid = crud.create_bid(db=db, bid=bid)
-    return {"status": 200, "message": "Bid created successfully", "id": db_bid.id}
+
+    # If the bid does not exist, create a new one
+    if not bid:
+        bid = Bid(
+            state=data.state,
+            platform=data.platform,
+            influencer_username=data.influencer_username,
+            influencer_id=data.influencer_id,
+            influencer=data.influencer,
+            brand_username=data.brand_username,
+            brand_id=data.brand_id,
+            brand=data.brand,
+            title=data.title,
+            engagement_type=data.engagement_type,
+        )
+        db_bid = crud.create_bid(db=db, bid=bid)
+        return {"status": 200, "message": "Bid created successfully", "id": db_bid.id}
+
+    # If the bid exists, update it
+    else:
+        updated_bid = crud.update_bid(db=db, bid=bid, data=data)
+        return {"status": 200, "message": "Bid updated successfully", "id": updated_bid.id}
 
 
 def process_accepted_bid(bid_id: int, current_user: User):
